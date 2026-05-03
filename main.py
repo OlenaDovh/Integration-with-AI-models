@@ -8,7 +8,13 @@ bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
-async def main():
+async def main() -> None:
+    """Запускає Telegram-бота та ініціалізує маршрути.
+
+    Returns:
+        None.
+    """
+
     dp.include_router(router)
     await dp.start_polling(bot)
 

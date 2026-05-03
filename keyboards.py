@@ -1,7 +1,13 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
-def get_style_keyboard():
+def get_style_keyboard() -> InlineKeyboardMarkup:
+    """Створює клавіатуру для вибору стилю тексту.
+
+    Returns:
+        InlineKeyboardMarkup із кнопками вибору стилю.
+    """
+
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -19,7 +25,13 @@ def get_style_keyboard():
     )
 
 
-def get_main_keyboard():
+def get_main_keyboard() -> InlineKeyboardMarkup:
+    """Створює основну клавіатуру бота.
+
+    Returns:
+        InlineKeyboardMarkup із кнопкою вибору стилю.
+    """
+
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [

@@ -19,22 +19,56 @@ user_styles = {}
 
 
 @router.message(CommandStart())
-async def start_handler(message: Message):
-    text = """
-Привіт! Я AI-Стилізатор повідомлень.
+async def start_handler(message: Message) -> None:
+    """Обробляє команду /start та пропонує обрати стиль.
 
-Спочатку обери стиль, а потім надішли текст, який потрібно переписати.
+    Args:
+        message: Повідомлення користувача.
+
+    Returns:
+        None.
+    """
+
+    text = """
+Привіт! Я AI-Стилізатор повідомлень 🤖
+
+Я можу переписати твій текст у різних стилях.
+
+Як користуватися:
+1. Обери стиль кнопкою нижче
+2. Надішли будь-який текст
+3. Отримай результат
+
+Спробуй прямо зараз 👇
 """
     await message.answer(text, reply_markup=get_style_keyboard())
 
 
 @router.message(Command("style"))
-async def style_handler(message: Message):
+async def style_handler(message: Message) -> None:
+    """Обробляє команду /style та показує клавіатуру вибору стилю.
+
+    Args:
+        message: Повідомлення користувача.
+
+    Returns:
+        None.
+    """
+
     await message.answer("Обери стиль:", reply_markup=get_style_keyboard())
 
 
 @router.message(Command("help"))
-async def help_handler(message: Message):
+async def help_handler(message: Message) -> None:
+    """Обробляє команду /help та пояснює, як користуватися ботом.
+
+    Args:
+        message: Повідомлення користувача.
+
+    Returns:
+        None.
+    """
+
     text = """
 Як користуватися ботом:
 
@@ -49,7 +83,16 @@ async def help_handler(message: Message):
 
 
 @router.callback_query(F.data.startswith("style:"))
-async def style_callback(callback: CallbackQuery):
+async def style_callback(callback: CallbackQuery) -> None:
+    """Обробляє вибір стилю через inline-кнопку.
+
+    Args:
+        callback: Callback-запит від користувача.
+
+    Returns:
+        None.
+    """
+
     style = callback.data.split(":")[1]
     user_styles[callback.from_user.id] = style
 
@@ -61,7 +104,16 @@ async def style_callback(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "choose_style")
-async def choose_style_callback(callback: CallbackQuery):
+async def choose_style_callback(callback: CallbackQuery) -> None:
+    """Повторно відкриває клавіатуру вибору стилю.
+
+    Args:
+        callback: Callback-запит від користувача.
+
+    Returns:
+        None.
+    """
+
     await callback.message.answer(
         "Обери стиль:",
         reply_markup=get_style_keyboard()
@@ -70,7 +122,16 @@ async def choose_style_callback(callback: CallbackQuery):
 
 
 @router.message()
-async def text_handler(message: Message):
+async def text_handler(message: Message) -> None:
+    """Обробляє текст користувача та надсилає стилізований результат.
+
+    Args:
+        message: Повідомлення користувача.
+
+    Returns:
+        None.
+    """
+
     user_id = message.from_user.id
 
     if user_id not in user_styles:
@@ -90,4 +151,4 @@ async def text_handler(message: Message):
         result = await generate_text(style, user_text)
         await message.answer(result, reply_markup=get_main_keyboard())
     except Exception as e:
-        await message.answer(f"Помилка: {e}")
+        await message.answer("Сталася помилка. Спробуй ще раз пізніше.")
