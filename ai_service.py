@@ -1,11 +1,11 @@
 from google import genai
-from settings import GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION
-
+from settings import GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_LOCATION, credentials
 
 client = genai.Client(
     vertexai=True,
     project=GOOGLE_CLOUD_PROJECT,
-    location=GOOGLE_CLOUD_LOCATION
+    location=GOOGLE_CLOUD_LOCATION,
+    credentials=credentials
 )
 
 
