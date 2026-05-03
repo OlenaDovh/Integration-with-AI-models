@@ -151,4 +151,4 @@ async def text_handler(message: Message) -> None:
         result = await generate_text(style, user_text)
         await message.answer(result, reply_markup=get_main_keyboard())
     except Exception as e:
-        await message.answer("Сталася помилка. Спробуй ще раз пізніше.")
+        await message.answer(f"Помилка: {e}")
